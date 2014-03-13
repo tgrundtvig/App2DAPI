@@ -19,5 +19,4 @@ public interface Canvas
     public void drawFilledPolygon(Polygon polygon);
     public void drawOutlinedPolygon(Polygon polygon);
     public void drawPoint(Point2D p, float size);
-    public void drawPoint(Point2D p);
 }
