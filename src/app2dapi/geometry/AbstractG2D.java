@@ -17,6 +17,9 @@ package app2dapi.geometry;
 public abstract class AbstractG2D implements G2D
 {
     private final Point2D ORIGO = newPoint2D(0,0);
+    private final Vector2D ZEROVECTOR = newVector2D(0,0);
+    private final Vector2D UNITXVECTOR = newVector2D(1,0);
+    private final Vector2D UNITYVECTOR = newVector2D(0,2);
     
     @Override
     public abstract Point2D newPoint2D(float x, float y);
@@ -49,6 +52,25 @@ public abstract class AbstractG2D implements G2D
     }
     
     @Override
+    public Vector2D zeroVector2D()
+    {
+        return ZEROVECTOR;
+    }
+
+    @Override
+    public Vector2D unitXVector()
+    {
+        return UNITXVECTOR;
+    }
+
+    @Override
+    public Vector2D unitYVector()
+    {
+        return UNITYVECTOR;
+    }
+    
+    
+    @Override
     public Transformation2D scale(Vector2D s)
     {
         return scale(s.x(), s.y());
@@ -58,6 +80,12 @@ public abstract class AbstractG2D implements G2D
     public Transformation2D translate(Vector2D t)
     {
         return translate(t.x(), t.y());
+    }
+    
+    @Override
+    public Transformation2D translateOrigoTo(Point2D pos)
+    {
+        return translate(pos.x(), pos.y());
     }
 
     @Override

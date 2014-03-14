@@ -1,12 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- *//*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package app2dapi.geometry;
 
 /**
@@ -50,6 +41,9 @@ public interface G2D
     
     //Creation:
     public Point2D origo();
+    public Vector2D zeroVector2D();
+    public Vector2D unitXVector();
+    public Vector2D unitYVector();
     public Point2D newPoint2D(float x, float y);
     public Vector2D newVector2D(float x, float y);
     public Transformation2D identity();
@@ -57,6 +51,7 @@ public interface G2D
     public Transformation2D scale(Vector2D s);
     public Transformation2D translate(float tx, float ty);
     public Transformation2D translate(Vector2D t);
+    public Transformation2D translateOrigoTo(Point2D pos);
     public Transformation2D rotate(float angle);
     public Transformation2D rotate(float angle, Point2D pivot);
     public Transformation2D flipX();
@@ -85,6 +80,7 @@ public interface G2D
     
     //Polygons
     public PolygonBuilder getPolygonBuilder();
+    public Polygon createPolygon(Point2D[] points);
     public Polygon createRectangle(Point2D lowerLeft, Point2D upperRight);
     public Polygon createRectangle(Point2D center, float width, float height);
     public Polygon createCircle(Point2D center, float radius, int segments);
