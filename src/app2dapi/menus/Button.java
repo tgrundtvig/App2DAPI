@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app2dapi.animation;
+package app2dapi.menus;
 
 /**
  *
  * @author Tobias Grundtvig
  */
-public interface IAnimatedEntity<E> extends IAnimation
+public interface Button
 {
-    public E getValue();
+    
 }

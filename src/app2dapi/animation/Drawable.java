@@ -9,7 +9,7 @@ package app2dapi.animation;
  *
  * @author Tobias Grundtvig
  */
-public interface IScalar
+public interface Drawable<CANVAS>
 {
-    public double value();
+    public void draw(CANVAS canvas);
 }

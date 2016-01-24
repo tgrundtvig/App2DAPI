@@ -7,7 +7,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package app2dapi.geometry;
 
 /**
@@ -16,41 +15,42 @@ package app2dapi.geometry;
  */
 public abstract class AbstractG2D implements G2D
 {
-    private final Point2D ORIGO = newPoint2D(0,0);
-    private final Vector2D ZEROVECTOR = newVector2D(0,0);
-    private final Vector2D UNITXVECTOR = newVector2D(1,0);
-    private final Vector2D UNITYVECTOR = newVector2D(0,2);
-    
+
+    private final Point2D ORIGO = newPoint2D(0, 0);
+    private final Vector2D ZEROVECTOR = newVector2D(0, 0);
+    private final Vector2D UNITXVECTOR = newVector2D(1, 0);
+    private final Vector2D UNITYVECTOR = newVector2D(0, 1);
+
     @Override
-    public abstract Point2D newPoint2D(float x, float y);
-    
+    public abstract Point2D newPoint2D(double x, double y);
+
     @Override
-    public abstract Vector2D newVector2D(float x, float y);
-    
+    public abstract Vector2D newVector2D(double x, double y);
+
     @Override
-    public abstract Transformation2D scale(float sx, float sy);
-    
+    public abstract Transformation2D scale(double sx, double sy);
+
     @Override
-    public abstract Transformation2D translate(float tx, float ty);
-    
+    public abstract Transformation2D translate(double tx, double ty);
+
     @Override
-    public abstract Transformation2D rotate(float angle);
-    
+    public abstract Transformation2D rotate(double angle);
+
     @Override
     public abstract Transformation2D inverse(Transformation2D t);
 
     @Override
     public abstract Transformation2D combine(Transformation2D t2, Transformation2D t1);
-    
+
     @Override
     public abstract PolygonBuilder getPolygonBuilder();
-    
+
     @Override
     public Point2D origo()
     {
         return ORIGO;
     }
-    
+
     @Override
     public Vector2D zeroVector2D()
     {
@@ -68,20 +68,19 @@ public abstract class AbstractG2D implements G2D
     {
         return UNITYVECTOR;
     }
-    
-    
+
     @Override
     public Transformation2D scale(Vector2D s)
     {
         return scale(s.x(), s.y());
-    }  
+    }
 
     @Override
     public Transformation2D translate(Vector2D t)
     {
         return translate(t.x(), t.y());
     }
-    
+
     @Override
     public Transformation2D translateOrigoTo(Point2D pos)
     {
@@ -89,23 +88,31 @@ public abstract class AbstractG2D implements G2D
     }
 
     @Override
-    public float angle(Vector2D a, Vector2D b)
+    public double angle(Vector2D a, Vector2D b)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
-    public float length(Vector2D v)
+    public double distance(Point2D a, Point2D b)
     {
-        return (float) Math.sqrt(sqrLength(v));
+        double dx = b.x() - a.x();
+        double dy = b.y() - a.y();
+        return Math.sqrt(dx * dx + dy * dy);
     }
-    
+
     @Override
-    public float sqrLength(Vector2D v)
+    public double length(Vector2D v)
     {
-        float x = v.x();
-        float y = v.y();
-        return x*x + y*y;
+        return Math.sqrt(sqrLength(v));
+    }
+
+    @Override
+    public double sqrLength(Vector2D v)
+    {
+        double x = v.x();
+        double y = v.y();
+        return x * x + y * y;
     }
 
     @Override
@@ -121,7 +128,7 @@ public abstract class AbstractG2D implements G2D
     }
 
     @Override
-    public float dot(Vector2D a, Vector2D b)
+    public double dot(Vector2D a, Vector2D b)
     {
         return a.x() * b.x() + a.y() * b.y();
     }
@@ -130,7 +137,7 @@ public abstract class AbstractG2D implements G2D
     public Vector2D projection(Vector2D a, Vector2D b)
     {
         Vector2D unitB = normalized(b);
-        float f = dot(a, unitB);
+        double f = dot(a, unitB);
         return times(a, f);
     }
 
@@ -149,19 +156,19 @@ public abstract class AbstractG2D implements G2D
     @Override
     public Vector2D subtract(Vector2D a, Vector2D b)
     {
-        return newVector2D(a.x()-b.x(), a.y()-b.y());
+        return newVector2D(a.x() - b.x(), a.y() - b.y());
     }
-    
+
     @Override
     public Point2D subtract(Point2D p, Vector2D v)
     {
-        return newPoint2D(p.x()-v.x(), p.y()-v.y());
+        return newPoint2D(p.x() - v.x(), p.y() - v.y());
     }
 
     @Override
     public Vector2D fromTo(Point2D a, Point2D b)
     {
-        return newVector2D(b.x()-a.x(),b.y()-a.y());
+        return newVector2D(b.x() - a.x(), b.y() - a.y());
     }
 
     @Override
@@ -171,9 +178,9 @@ public abstract class AbstractG2D implements G2D
     }
 
     @Override
-    public Vector2D times(Vector2D v, float s)
+    public Vector2D times(Vector2D v, double s)
     {
-        return newVector2D(v.x()*s, v.y()*s);
+        return newVector2D(v.x() * s, v.y() * s);
     }
 
     @Override
@@ -181,7 +188,7 @@ public abstract class AbstractG2D implements G2D
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-     
+
     @Override
     public Polygon createRectangle(Point2D lowerLeft, Point2D upperRight)
     {
@@ -194,30 +201,33 @@ public abstract class AbstractG2D implements G2D
         bld.addPoint(upperLeft);
         return bld.build();
     }
-    
+
     @Override
-    public Polygon createRectangle(Point2D center, float width, float height)
+    public Polygon createRectangle(Point2D center, double width, double height)
     {
         PolygonBuilder bld = getPolygonBuilder();
-        float halfWidth = width * 0.5f;
-        float halfHeight = height * 0.5f;
-        float minX = center.x() - halfWidth;
-        float maxX = center.x() + halfWidth;
-        float minY = center.y() - halfHeight;
-        float maxY = center.y() + halfHeight;
+        double halfWidth = width * 0.5f;
+        double halfHeight = height * 0.5f;
+        double minX = center.x() - halfWidth;
+        double maxX = center.x() + halfWidth;
+        double minY = center.y() - halfHeight;
+        double maxY = center.y() + halfHeight;
         bld.addPoint(newPoint2D(minX, minY));
         bld.addPoint(newPoint2D(maxX, minY));
         bld.addPoint(newPoint2D(maxX, maxY));
         bld.addPoint(newPoint2D(minX, maxY));
         return bld.build();
     }
-    
+
     @Override
-    public Polygon createCircle(Point2D center, float radius, int segments)
+    public Polygon createCircle(Point2D center, double radius, int segments)
     {
-        if(segments < 3) throw new RuntimeException("There must be at least 3 segments! There are only " + segments + " segments!");
+        if(segments < 3)
+        {
+            throw new RuntimeException("There must be at least 3 segments! There are only " + segments + " segments!");
+        }
         PolygonBuilder res = getPolygonBuilder();
-        float angle = (float)((Math.PI * 2) / segments);
+        double angle = (Math.PI * 2) / segments;
         Transformation2D r = rotate(angle);
         Vector2D v = newVector2D(radius, 0);
         res.addPoint(add(center, v));
@@ -228,17 +238,17 @@ public abstract class AbstractG2D implements G2D
         }
         return res.build();
     }
-    
+
     @Override
-    public Polygon createArrow(Point2D begin, Point2D end, float width)
+    public Polygon createArrow(Point2D begin, Point2D end, double width)
     {
         PolygonBuilder res = getPolygonBuilder();
         Vector2D vx = fromTo(begin, end);
-        float xLength = vx.length();
+        double xLength = vx.length();
         Vector2D unitX = times(vx, 1.0f / xLength);
         Vector2D unitY = newVector2D(-unitX.y(), unitX.x());
         Vector2D l = times(unitX, xLength - width);
-        Vector2D h = times(unitY, width*0.5f);
+        Vector2D h = times(unitY, width * 0.5f);
         Point2D p = subtract(begin, h);
         res.addPoint(p);
         p = add(p, l);
@@ -254,13 +264,13 @@ public abstract class AbstractG2D implements G2D
         res.addPoint(p);
         return res.build();
     }
-    
+
     @Override
-    public Polygon createLine(Point2D begin, Point2D end, float width)
+    public Polygon createLine(Point2D begin, Point2D end, double width)
     {
         PolygonBuilder res = getPolygonBuilder();
         Vector2D vx = fromTo(begin, end);
-        float xLength = vx.length();
+        double xLength = vx.length();
         Vector2D unitX = times(vx, 1.0f / xLength);
         Vector2D unitY = newVector2D(-unitX.y(), unitX.x());
         Vector2D l = times(unitX, xLength);
@@ -275,11 +285,11 @@ public abstract class AbstractG2D implements G2D
         res.addPoint(p);
         return res.build();
     }
-    
+
     @Override
-    public Polygon createDoubleArrow(Point2D begin, Point2D end, float width)
+    public Polygon createDoubleArrow(Point2D begin, Point2D end, double width)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

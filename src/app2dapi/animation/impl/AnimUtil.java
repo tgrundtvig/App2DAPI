@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app2dapi.animation;
+package app2dapi.animation.impl;
 
 /**
  *
  * @author Tobias Grundtvig
  */
-public interface IUpdatable
+public class AnimUtil
 {
-    public void update(double time);
+    
 }

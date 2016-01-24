@@ -8,6 +8,10 @@ package app2dapi.animation;
 /**
  *
  * @author Tobias Grundtvig
+ * @param <CANVAS>
  */
-public interface IAnimatedScalar extends IScalar, IAnimation
-{}
+public interface Visual<CANVAS> extends Updatable, Drawable<CANVAS>
+{
+    public void start(double time);
+    public boolean isFinished();
+}

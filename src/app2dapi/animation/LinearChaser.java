@@ -5,13 +5,14 @@
  */
 package app2dapi.animation;
 
-import app2dapi.util.INotifiable;
-
 /**
  *
  * @author Tobias Grundtvig
+ * @param <E>
  */
-public interface ITimer extends IUpdatable
+public interface LinearChaser<E> extends Chaser<E>
 {
-    public void setTimer(double seconds, INotifiable listener);
+    public void setDuration(double duration);
+    public void setSpeed(double speed);
+    public double getSpeed();
 }

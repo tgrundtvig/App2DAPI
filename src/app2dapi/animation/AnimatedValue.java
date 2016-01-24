@@ -9,7 +9,7 @@ package app2dapi.animation;
  *
  * @author Tobias Grundtvig
  */
-public interface IAnimationFinishedListener
+public interface AnimatedValue<E>
 {
-    public void onFinished();
+    public E getCurrent();
 }

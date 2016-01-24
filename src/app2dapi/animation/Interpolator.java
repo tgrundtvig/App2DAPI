@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app2dapi.util;
+package app2dapi.animation;
 
 /**
  *
  * @author Tobias Grundtvig
  */
-public interface INotifiable
+public interface Interpolator<E>
 {
-    public void doNotify();
+    public E interpolate(E a, E b, double f);
+    public double distance(E a, E b);
 }
