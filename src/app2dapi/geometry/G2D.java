@@ -63,6 +63,8 @@ public interface G2D
     public Vector2D unitYVector();
     public Point2D newPoint2D(double x, double y);
     public Vector2D newVector2D(double x, double y);
+    public Point2D asPoint2D(Vector2D v);
+    public Vector2D asVector2D(Point2D p);
     public Dimension2D newDimension2D(double width, double height);
     public Transformation2D identity();
     public Transformation2D scale(double sx, double sy);
@@ -94,6 +96,7 @@ public interface G2D
     public Vector2D fromTo(Point2D a, Point2D b);
     public Point2D add(Point2D p, Vector2D v);
     public Vector2D times(Vector2D v, double s);
+    public Point2D center(Point2D a, Point2D b);
     public Transformation2D inverse(Transformation2D t);
     public Transformation2D combine(Transformation2D a, Transformation2D b, Transformation2D... rest);
     public Transformation2D match(Point2D p1Src, Point2D p2Src, Point2D p1Dst, Point2D p2Dst);

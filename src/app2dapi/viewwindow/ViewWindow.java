@@ -5,7 +5,6 @@
  */
 package app2dapi.viewwindow;
 
-import app2dapi.geometry.G2D.Dimension2D;
 import app2dapi.geometry.G2D.Point2D;
 import app2dapi.geometry.G2D.Transformation2D;
 
@@ -16,7 +15,7 @@ import app2dapi.geometry.G2D.Transformation2D;
 public interface ViewWindow
 {
     public void setKeepAspectRation(boolean keepAspectRatio);
-    public void setHUDDimension(Dimension2D sizeHUD);
+    public void setHUDDimension(Point2D hudMin, Point2D hudMax);
     public void setWindowWidth(double width);
     public void setWindowHeight(double height);
     public void setWindowRotation(double rotation);
@@ -27,6 +26,8 @@ public interface ViewWindow
     public double getWindowWidth();
     public double getWindowHeight();
     public double getWindowRotation();
+    public Point2D getHUDMin();
+    public Point2D getHUDMax();
     public Transformation2D getWorldToHUD();
     public Transformation2D getHUDToWorld();
     public Point2D fromHUDToWorld(Point2D pointOnHUD);

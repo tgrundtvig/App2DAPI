@@ -37,10 +37,10 @@ import app2dapi.viewwindow.impl.ViewWindowImpl;
 public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListener, KeyboardListener, CharInputListener
 {
     private final PanAndZoom2DApp app;
+    private PanAndZoomInit init;
     private G2D g2d;
     private ColorFactory cf;
     private ViewWindow view;
-    private Dimension2D worldSize;
     private Transformation2D fromHUDToScreen;
     private Transformation2D fromScreenToHUD;
     private double zoom;
@@ -62,19 +62,21 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
     {
         this.g2d = device.getGeometry2D();
         this.cf = device.getScreen().getColorFactory();
-        app.initialize(this);
         double screenX = device.getScreen().getPixelWidth();
         double screenY = device.getScreen().getPixelHeight();
         double aspectRatio = screenX / screenY;
-        this.worldSize = app.getWorldSize();
-        double widthHUD = app.getHUDWidth(aspectRatio);
-        double heightHUD = widthHUD / aspectRatio;
-        double scale = screenX / widthHUD;
-        this.fromHUDToScreen = g2d.scale(scale, scale);
+        init = app.initialize(this, aspectRatio);
+        Dimension2D sizeHUD = g2d.newDimension2D(init.getHUDMax().x() - init.getHUDMin().x(),
+                                                 init.getHUDMax().y() - init.getHUDMin().y());
+        Point2D centerHUD = g2d.center(init.getHUDMin(), init.getHUDMax());
+        double scale = screenX / sizeHUD.width();
+        this.fromHUDToScreen = g2d.combine(g2d.scale(scale, scale), g2d.translatePointToOrigo(centerHUD));
         this.fromScreenToHUD = g2d.inverse(fromHUDToScreen);
-        view = new ViewWindowImpl(g2d, g2d.newDimension2D(widthHUD, heightHUD));
-        zoom = widthHUD;
+        view = new ViewWindowImpl(g2d, init.getHUDMin(), init.getHUDMax(), init.getViewStartWidth(), init.getWorldStartPos());
+        
+        zoom = init.getViewStartWidth();
         zoomSmoothing = zoom;
+        
         device.getMouse().addMouseListener(this);
         device.getKeyboard().addKeyboardListener(this);
         device.getCharInput().addCharInputListener(this);
@@ -141,9 +143,12 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
         updateMousePositions(e);
         if(e.getButton() == MouseButton.RIGHT)
         {
-            drag = true;    
-            view.setWorldMatchPoint(mouseWorldPos);
-            view.setHUDMatchPoint(mouseHUDPos);
+            if(inWorld(mouseWorldPos))
+            {
+                drag = true;    
+                view.setWorldMatchPoint(mouseWorldPos);
+                view.setHUDMatchPoint(mouseHUDPos);
+            }
         }
         else if(e.getButton() == MouseButton.LEFT)
         {
@@ -177,6 +182,10 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
             for(int i = 0; i < clicks; ++i)
             {
                 zoom *= 1.1f;
+                if(zoom > init.getViewMaxWidth())
+                {
+                    zoom = init.getViewMaxWidth();
+                }
             }
         }
         else
@@ -185,6 +194,10 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
             for(int i = 0; i < clicks; ++i)
             {
                 zoom /= 1.1f;
+                if(zoom < init.getViewMinWidth())
+                {
+                    zoom = init.getViewMinWidth();
+                }
             }
         }
     }
@@ -212,6 +225,12 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
         mouseScreenPos = g2d.newPoint2D(e.getX(), e.getY());
         mouseHUDPos = fromScreenToHUD.transform(mouseScreenPos);
         mouseWorldPos = view.fromHUDToWorld(mouseHUDPos);
+    }
+
+    private boolean inWorld(Point2D mouseWorldPos)
+    {
+        return mouseWorldPos.x() >= init.getWorldMin().x() && mouseWorldPos.y() >= init.getWorldMin().y() &&
+               mouseWorldPos.x() <= init.getWorldMax().x() && mouseWorldPos.y() <= init.getWorldMax().y();
     }
     
 }

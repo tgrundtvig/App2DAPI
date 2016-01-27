@@ -21,6 +21,9 @@ public class ViewWindowImpl implements ViewWindow
     private boolean keepAspectRatio;
     private double aspectRatio;
     private Dimension2D sizeHUD;
+    private Point2D hudMax;
+    private Point2D hudMin;
+    private Point2D hudCenter;
     private double windowWidth;
     private double windowHeight;
     private double windowRotation;
@@ -29,29 +32,31 @@ public class ViewWindowImpl implements ViewWindow
     private Transformation2D transWorldToHUD;
     private Transformation2D transHUDToWorld;
     
-    public ViewWindowImpl(G2D g2d, Dimension2D sizeHUD)
+    public ViewWindowImpl(G2D g2d, Point2D hudMin, Point2D hudMax, double windowWidth, Point2D worldStartPoint)
     {
         this.g2d = g2d;
-        this.sizeHUD = sizeHUD;
-        this.keepAspectRatio = true;
+        this.hudMin = hudMin;
+        this.hudMax = hudMax;
+        this.sizeHUD = g2d.newDimension2D(hudMax.x()-hudMin.x(), hudMax.y() - hudMin.y());
+        this.hudCenter = g2d.center(hudMin, hudMax);
         this.aspectRatio = sizeHUD.width() / sizeHUD.height();
-        this.windowWidth = sizeHUD.width();
-        this.windowHeight = sizeHUD.height();
+        this.keepAspectRatio = true;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowWidth / aspectRatio;
         this.windowRotation = 0;
-        this.matchPointHUD = g2d.origo();
-        this.matchPointWorld = g2d.origo();
+        this.matchPointHUD = hudCenter;
+        this.matchPointWorld = worldStartPoint;
         this.transWorldToHUD = null;
         this.transHUDToWorld = null;
     }
     
-    
-    
-    
-
     @Override
-    public void setHUDDimension(Dimension2D sizeHUD)
+    public void setHUDDimension(Point2D hudMin, Point2D hudMax)
     {
-        this.sizeHUD = sizeHUD;
+        this.hudMin = hudMin;
+        this.hudMax = hudMax;
+        this.sizeHUD = g2d.newDimension2D(hudMax.x()-hudMin.x(), hudMax.y() - hudMin.y());
+        this.hudCenter = g2d.center(hudMin, hudMax);
         this.aspectRatio = sizeHUD.width() / sizeHUD.height();
         if(keepAspectRatio)
         {
@@ -215,5 +220,17 @@ public class ViewWindowImpl implements ViewWindow
             calculateWorldToHUD();
         }
         transHUDToWorld = g2d.inverse(transWorldToHUD);
+    }
+
+    @Override
+    public Point2D getHUDMin()
+    {
+        return hudMin;
+    }
+
+    @Override
+    public Point2D getHUDMax()
+    {
+        return hudMax;
     }
 }

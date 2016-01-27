@@ -19,12 +19,11 @@ import app2dapi.input.keyboard.KeyReleasedEvent;
  */
 public interface PanAndZoom2DApp
 {
-    public void initialize(PanAndZoomToolKit tk);
-    public boolean showMouseCursor();
-    public double getHUDWidth(double aspectRatio);
-    public Dimension2D getWorldSize();
+    //Initialization
+    public PanAndZoomInit initialize(PanAndZoomToolKit tk, double aspectRatio);
     
     //Mouse input
+    public boolean showMouseCursor();
     public void onMouseMoved(Point2D mouseHUDPos, Point2D mouseWorldPos);
     public void onMousePressed(Point2D mouseHUDPos, Point2D mouseWorldPos);
     public void onMouseReleased(Point2D mouseHUDPos, Point2D mouseWorldPos);

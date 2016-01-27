@@ -28,6 +28,12 @@ public abstract class AbstractG2D implements G2D
     public abstract Vector2D newVector2D(double x, double y);
 
     @Override
+    public abstract Point2D asPoint2D(Vector2D v);
+
+    @Override
+    public abstract Vector2D asVector2D(Point2D p);
+
+    @Override
     public abstract Transformation2D scale(double sx, double sy);
 
     @Override
@@ -86,18 +92,17 @@ public abstract class AbstractG2D implements G2D
     {
         return translate(point.x(), point.y());
     }
-    
- 
+
     @Override
     public Transformation2D translatePointToOrigo(Point2D point)
     {
         return translate(-point.x(), -point.y());
     }
-    
+
     @Override
     public Transformation2D translateAToB(Point2D a, Point2D b)
     {
-        return translate(b.x()-a.x(), b.y()-a.y());
+        return translate(b.x() - a.x(), b.y() - a.y());
     }
 
     @Override
@@ -194,6 +199,12 @@ public abstract class AbstractG2D implements G2D
     public Vector2D times(Vector2D v, double s)
     {
         return newVector2D(v.x() * s, v.y() * s);
+    }
+
+    @Override
+    public Point2D center(Point2D a, Point2D b)
+    {
+        return newPoint2D((a.x() + b.x()) * 0.5, (a.y() + b.y()) * 0.5);
     }
 
     @Override
