@@ -20,6 +20,12 @@ public interface G2D
         public double sqrLength();
         public double length();
     }
+    
+    public interface Dimension2D
+    {
+        public double width();
+        public double height();
+    }
 
     public interface Transformation2D
     {
@@ -57,12 +63,15 @@ public interface G2D
     public Vector2D unitYVector();
     public Point2D newPoint2D(double x, double y);
     public Vector2D newVector2D(double x, double y);
+    public Dimension2D newDimension2D(double width, double height);
     public Transformation2D identity();
     public Transformation2D scale(double sx, double sy);
     public Transformation2D scale(Vector2D s);
     public Transformation2D translate(double tx, double ty);
     public Transformation2D translate(Vector2D t);
-    public Transformation2D translateOrigoTo(Point2D pos);
+    public Transformation2D translateOrigoToPoint(Point2D point);
+    public Transformation2D translatePointToOrigo(Point2D point);
+    public Transformation2D translateAToB(Point2D a, Point2D b);
     public Transformation2D rotate(double angle);
     public Transformation2D rotate(double angle, Point2D pivot);
     public Transformation2D flipX();
@@ -81,12 +90,12 @@ public interface G2D
     public Vector2D rejection(Vector2D a, Vector2D b);
     public Vector2D add(Vector2D a, Vector2D b);
     public Vector2D subtract(Vector2D a, Vector2D b);
-    public Point2D subtract(Point2D p, Vector2D v);
+    public Point2D subtract(Point2D p, Vector2D v); 
     public Vector2D fromTo(Point2D a, Point2D b);
     public Point2D add(Point2D p, Vector2D v);
     public Vector2D times(Vector2D v, double s);
     public Transformation2D inverse(Transformation2D t);
-    public Transformation2D combine(Transformation2D t2, Transformation2D t1);
+    public Transformation2D combine(Transformation2D a, Transformation2D b, Transformation2D... rest);
     public Transformation2D match(Point2D p1Src, Point2D p2Src, Point2D p1Dst, Point2D p2Dst);
     
     

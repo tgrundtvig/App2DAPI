@@ -40,7 +40,7 @@ public abstract class AbstractG2D implements G2D
     public abstract Transformation2D inverse(Transformation2D t);
 
     @Override
-    public abstract Transformation2D combine(Transformation2D t2, Transformation2D t1);
+    public abstract Transformation2D combine(Transformation2D a, Transformation2D b, Transformation2D... rest);
 
     @Override
     public abstract PolygonBuilder getPolygonBuilder();
@@ -82,9 +82,22 @@ public abstract class AbstractG2D implements G2D
     }
 
     @Override
-    public Transformation2D translateOrigoTo(Point2D pos)
+    public Transformation2D translateOrigoToPoint(Point2D point)
     {
-        return translate(pos.x(), pos.y());
+        return translate(point.x(), point.y());
+    }
+    
+ 
+    @Override
+    public Transformation2D translatePointToOrigo(Point2D point)
+    {
+        return translate(-point.x(), -point.y());
+    }
+    
+    @Override
+    public Transformation2D translateAToB(Point2D a, Point2D b)
+    {
+        return translate(b.x()-a.x(), b.y()-a.y());
     }
 
     @Override

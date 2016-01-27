@@ -42,7 +42,7 @@ public class ViewWindow implements IViewWindow
         this.changed = true;
         this.screenToWorldCalculated = false;
         this.worldPos = g2d.origo();
-        this.screenPos = g2d.newPoint2D(this.screenX*0.5f, this.screenY*0.5f);
+        this.screenPos = g2d.origo();
     }
     
     
@@ -174,7 +174,7 @@ public class ViewWindow implements IViewWindow
     {
         Transformation2D t1 = g2d.translate(-worldPos.x(), -worldPos.y());
         double tmp = screenX / width;
-        Transformation2D t2 = g2d.scale(tmp, -tmp);
+        Transformation2D t2 = g2d.scale(tmp, tmp);
         Transformation2D t3 = g2d.combine(t2, t1);
         Transformation2D t4 = g2d.translate(screenPos.x(), screenPos.y());
         worldToScreen = g2d.combine(t4, t3);
