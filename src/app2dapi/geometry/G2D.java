@@ -31,10 +31,15 @@ public interface G2D
     {
         public Point2D transform(Point2D p);
         public Vector2D transform(Vector2D v);
+        public BoundingBox2D transform(BoundingBox2D boundingBox);
     }
     
     public interface BoundingBox2D
     {
+        public double minX();
+        public double maxX();
+        public double minY();
+        public double maxY();
         public Point2D getLowerLeft();
         public Point2D getLowerRight();
         public Point2D getUpperLeft();
@@ -42,12 +47,17 @@ public interface G2D
         public Point2D getCenter();
         public double getWidth();
         public double getHeight();
+        public boolean contains(Point2D point);
+        public boolean contains(BoundingBox2D boundingBox);
+        public BoundingBox2D getExtendedBoundingBox(Point2D point);
     }
     
     public interface Polygon extends Iterable<Point2D>
     {
         public int numberOfPoints();
         public Point2D getPoint(int index);
+        public boolean contains(Point2D point);
+        public BoundingBox2D getBoundingBox();
     }
     
     public interface PolygonBuilder

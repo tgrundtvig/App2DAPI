@@ -5,7 +5,6 @@
  */
 package app2dapi.panandzoom2dapp;
 
-import app2dapi.geometry.G2D.Dimension2D;
 import app2dapi.geometry.G2D.Point2D;
 import app2dapi.graphics.Canvas;
 import app2dapi.graphics.Color;
