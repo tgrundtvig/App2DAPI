@@ -14,6 +14,7 @@ public interface Canvas
     public void clear(Color c);
     public void setColor(Color c);
     public Color getColor();
+    public void setLineWidth(float width);
     public void setTransformation(Transformation2D t);
     public Transformation2D getTransformation();
     public void drawLine(Point2D p1, Point2D p2);
