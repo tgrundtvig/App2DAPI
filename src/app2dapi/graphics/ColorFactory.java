@@ -14,6 +14,8 @@ public interface ColorFactory
 {
     public Color newColor(float r, float g, float b, float a);
     public Color newColor(float r, float g, float b);
+    public Color newColorInt(int r, int g, int b, int a);
+    public Color newColorInt(int r, int g, int b);
     
     public Color getWhite();
     public Color getBlack();

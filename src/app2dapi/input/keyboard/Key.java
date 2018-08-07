@@ -73,5 +73,7 @@ public enum Key
     VK_NUM_8,
     VK_NUM_9,
     VK_NUM_ENTER,
+    VK_BACK_SPACE,
+    VK_DELETE,
     UNKNOWN
 }

@@ -6,6 +6,7 @@
 package app2dapi.panandzoom2dapp;
 
 import app2dapi.geometry.G2D.Point2D;
+import app2dapi.input.mouse.MouseButton;
 
 /**
  *
@@ -13,6 +14,7 @@ import app2dapi.geometry.G2D.Point2D;
  */
 public class PanAndZoomInit
 {
+    private final MouseButton panButton;
     private final Point2D hudMin;
     private final Point2D hudMax;
     private final Point2D worldMin;
@@ -22,7 +24,8 @@ public class PanAndZoomInit
     private final double viewMinWidth;
     private final double viewMaxWidth;
 
-    public PanAndZoomInit(Point2D hudMin,
+    public PanAndZoomInit(MouseButton panButton,
+                          Point2D hudMin,
                           Point2D hudMax,
                           Point2D worldMin,
                           Point2D worldMax,
@@ -31,6 +34,7 @@ public class PanAndZoomInit
                           double viewMinWidth,
                           double viewMaxWidth)
     {
+        this.panButton = panButton;
         this.hudMin = hudMin;
         this.hudMax = hudMax;
         this.worldMin = worldMin;
@@ -39,6 +43,11 @@ public class PanAndZoomInit
         this.viewStartWidth = viewStartWidth;
         this.viewMinWidth = viewMinWidth;
         this.viewMaxWidth = viewMaxWidth;
+    }
+    
+    public MouseButton getPanButton()
+    {
+        return panButton;
     }
 
     public Point2D getHUDMin()

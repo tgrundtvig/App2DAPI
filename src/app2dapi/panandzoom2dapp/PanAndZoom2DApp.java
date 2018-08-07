@@ -11,6 +11,7 @@ import app2dapi.graphics.Color;
 import app2dapi.input.charinput.CharInputEvent;
 import app2dapi.input.keyboard.KeyPressedEvent;
 import app2dapi.input.keyboard.KeyReleasedEvent;
+import app2dapi.input.mouse.MouseButton;
 
 /**
  *
@@ -24,8 +25,8 @@ public interface PanAndZoom2DApp
     //Mouse input
     public boolean showMouseCursor();
     public void onMouseMoved(Point2D mouseHUDPos, Point2D mouseWorldPos);
-    public void onMousePressed(Point2D mouseHUDPos, Point2D mouseWorldPos);
-    public void onMouseReleased(Point2D mouseHUDPos, Point2D mouseWorldPos);
+    public void onMousePressed(Point2D mouseHUDPos, Point2D mouseWorldPos, MouseButton button);
+    public void onMouseReleased(Point2D mouseHUDPos, Point2D mouseWorldPos, MouseButton button);
     
     //Keyboard input
     public void onKeyPressed(KeyPressedEvent e);

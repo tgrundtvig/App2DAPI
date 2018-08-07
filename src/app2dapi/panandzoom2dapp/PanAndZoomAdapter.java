@@ -18,7 +18,6 @@ import app2dapi.input.charinput.CharInputListener;
 import app2dapi.input.keyboard.KeyPressedEvent;
 import app2dapi.input.keyboard.KeyReleasedEvent;
 import app2dapi.input.keyboard.KeyboardListener;
-import app2dapi.input.mouse.MouseButton;
 import app2dapi.input.mouse.MouseEvent;
 import app2dapi.input.mouse.MouseListener;
 import app2dapi.input.mouse.MouseMovedEvent;
@@ -141,7 +140,7 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
     public void onMousePressed(MousePressedEvent e)
     {
         updateMousePositions(e);
-        if(e.getButton() == MouseButton.RIGHT)
+        if(e.getButton() == init.getPanButton())
         {
             if(inWorld(mouseWorldPos))
             {
@@ -150,9 +149,9 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
                 view.setHUDMatchPoint(mouseHUDPos);
             }
         }
-        else if(e.getButton() == MouseButton.LEFT)
+        else
         {
-            app.onMousePressed(mouseHUDPos, mouseWorldPos);
+            app.onMousePressed(mouseHUDPos, mouseWorldPos, e.getButton());
         }
     }
 
@@ -160,13 +159,13 @@ public class PanAndZoomAdapter implements App2D, PanAndZoomToolKit, MouseListene
     public void onMouseReleased(MouseReleasedEvent e)
     {
         updateMousePositions(e);
-        if(e.getButton() == MouseButton.RIGHT)
+        if(e.getButton() == init.getPanButton())
         {
             drag = false;
         }
-        else if(e.getButton() == MouseButton.LEFT)
+        else
         {
-            app.onMouseReleased(mouseHUDPos, mouseWorldPos);
+            app.onMouseReleased(mouseHUDPos, mouseWorldPos, e.getButton());
         }
     }
 

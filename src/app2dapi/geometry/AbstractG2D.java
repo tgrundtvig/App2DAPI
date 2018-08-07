@@ -15,7 +15,9 @@ package app2dapi.geometry;
  */
 public abstract class AbstractG2D implements G2D
 {
-
+    private final double FULL_CIRCLE = Math.PI * 2;
+    private final double DEGREES_TO_RADIANS = FULL_CIRCLE / 360.0;
+    private final double RADIANS_TO_DEGREES = 360.0 / FULL_CIRCLE;
     private final Point2D ORIGO = newPoint2D(0, 0);
     private final Vector2D ZEROVECTOR = newVector2D(0, 0);
     private final Vector2D UNITXVECTOR = newVector2D(1, 0);
@@ -50,6 +52,18 @@ public abstract class AbstractG2D implements G2D
 
     @Override
     public abstract PolygonBuilder getPolygonBuilder();
+    
+    @Override
+    public double degreesToRadians(double degrees)
+    {
+        return degrees * DEGREES_TO_RADIANS;
+    }
+            
+    @Override
+    public double radiansToDegrees(double radians)
+    {
+        return radians * RADIANS_TO_DEGREES;
+    }
 
     @Override
     public Point2D origo()
@@ -204,7 +218,14 @@ public abstract class AbstractG2D implements G2D
     @Override
     public Point2D center(Point2D a, Point2D b)
     {
-        return newPoint2D((a.x() + b.x()) * 0.5, (a.y() + b.y()) * 0.5);
+        return interpolate(a, b, 0.5);
+    }
+    
+    @Override
+    public Point2D interpolate(Point2D a, Point2D b, double f)
+    {
+        double invf = 1.0f - f;
+        return newPoint2D(a.x() * invf + b.x() * f, a.y() * invf + b.y() * f);
     }
 
     @Override
@@ -223,7 +244,7 @@ public abstract class AbstractG2D implements G2D
         bld.addPoint(lowerRight);
         bld.addPoint(upperRight);
         bld.addPoint(upperLeft);
-        return bld.build();
+        return bld.buildPolygon();
     }
 
     @Override
@@ -240,7 +261,7 @@ public abstract class AbstractG2D implements G2D
         bld.addPoint(newPoint2D(maxX, minY));
         bld.addPoint(newPoint2D(maxX, maxY));
         bld.addPoint(newPoint2D(minX, maxY));
-        return bld.build();
+        return bld.buildPolygon();
     }
 
     @Override
@@ -251,7 +272,7 @@ public abstract class AbstractG2D implements G2D
             throw new RuntimeException("There must be at least 3 segments! There are only " + segments + " segments!");
         }
         PolygonBuilder res = getPolygonBuilder();
-        double angle = (Math.PI * 2) / segments;
+        double angle = FULL_CIRCLE / segments;
         Transformation2D r = rotate(angle);
         Vector2D v = newVector2D(radius, 0);
         res.addPoint(add(center, v));
@@ -260,7 +281,7 @@ public abstract class AbstractG2D implements G2D
             v = r.transform(v);
             res.addPoint(add(center, v));
         }
-        return res.build();
+        return res.buildPolygon();
     }
 
     @Override
@@ -286,7 +307,7 @@ public abstract class AbstractG2D implements G2D
         res.addPoint(p);
         p = subtract(p, l);
         res.addPoint(p);
-        return res.build();
+        return res.buildPolygon();
     }
 
     @Override
@@ -307,13 +328,37 @@ public abstract class AbstractG2D implements G2D
         res.addPoint(p);
         p = subtract(p, l);
         res.addPoint(p);
-        return res.build();
+        return res.buildPolygon();
     }
 
     @Override
     public Polygon createDoubleArrow(Point2D begin, Point2D end, double width)
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+   
+    @Override
+    public Path createCircleSegment(Point2D center, double radius, int segments, double startAngle, double endAngle)
+    {
+        if(segments < 1)
+        {
+            throw new RuntimeException("There must be at least 1 segments! There are only " + segments + " segments!");
+        }
+        PolygonBuilder res = getPolygonBuilder();
+        double dAngle = (startAngle > endAngle) ? (FULL_CIRCLE - startAngle + endAngle) : endAngle - startAngle;
+        if(dAngle >= FULL_CIRCLE)
+        {
+            return createCircle(center, radius, segments);
+        }
+        Transformation2D r = rotate(dAngle / segments);
+        Vector2D v = newVector2D(Math.cos(startAngle)*radius, Math.sin(startAngle)*radius);
+        res.addPoint(add(center, v));
+        for(int i = 0; i < segments; ++i)
+        {
+            v = r.transform(v);
+            res.addPoint(add(center, v));
+        }
+        return res.buildPath();
     }
 
 }

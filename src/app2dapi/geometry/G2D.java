@@ -52,19 +52,29 @@ public interface G2D
         public BoundingBox2D getExtendedBoundingBox(Point2D point);
     }
     
-    public interface Polygon extends Iterable<Point2D>
+    public interface Path extends Iterable<Point2D>
     {
         public int numberOfPoints();
         public Point2D getPoint(int index);
-        public boolean contains(Point2D point);
         public BoundingBox2D getBoundingBox();
+    }
+    
+    public interface Polygon extends Path
+    {
+        public boolean contains(Point2D point);   
     }
     
     public interface PolygonBuilder
     {
         public void addPoint(Point2D p);
-        public Polygon build();
+        public Path buildPath();
+        public Polygon buildPolygon();
     }
+    
+    
+    //functions:
+    public double degreesToRadians(double degrees);
+    public double radiansToDegrees(double degrees);
     
     //Creation:
     public Point2D origo();
@@ -107,6 +117,7 @@ public interface G2D
     public Point2D add(Point2D p, Vector2D v);
     public Vector2D times(Vector2D v, double s);
     public Point2D center(Point2D a, Point2D b);
+    public Point2D interpolate(Point2D start, Point2D end, double f);
     public Transformation2D inverse(Transformation2D t);
     public Transformation2D combine(Transformation2D a, Transformation2D b, Transformation2D... rest);
     public Transformation2D match(Point2D p1Src, Point2D p2Src, Point2D p1Dst, Point2D p2Dst);
@@ -118,8 +129,12 @@ public interface G2D
     public Polygon createRectangle(Point2D lowerLeft, Point2D upperRight);
     public Polygon createRectangle(Point2D center, double width, double height);
     public Polygon createCircle(Point2D center, double radius, int segments);
+    
     public Polygon createArrow(Point2D begin, Point2D end, double width);
     public Polygon createLine(Point2D begin, Point2D end, double width);
     public Polygon createDoubleArrow(Point2D begin, Point2D end, double width);
-    //More to come
+    
+    //Paths
+    public Path createCircleSegment(Point2D center, double radius, int segments, double startAngle, double endAngle);
+    public Polygon createPath(Point2D[] points);
 }
